@@ -11,7 +11,7 @@ const KEYS = {
   sortingOrder: 'sort',
 };
 
-export function getActionBarStateFromUrl(p0: { filterFree: boolean; filterPaid: boolean; filterViewOny: boolean; searchKeyword: string; filterMaxPricing: number; filterMinPricing: number; sortingOrder: ApparelCatalogSortingOrder; }): ActionBarState {
+export function getActionBarStateFromUrl(): ActionBarState {
   const params = new URLSearchParams(window.location.search);
 
   return {
