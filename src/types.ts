@@ -24,6 +24,7 @@ export type ActionbarStore = {
   originalList: ApparelCatalog
   showList: ApparelCatalog
   actionBarState: ActionBarState
+  loading: boolean
 
   setFilterFree: () => void
   setFilterPaid: () => void

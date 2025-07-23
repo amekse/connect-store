@@ -20,15 +20,19 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
   originalList: [],
   showList: [],
   actionBarState: { ...initialState },
+  loading: false,
 
   initialize: (list) => {
-    set(() => ({
+    set({loading: true});
+    set((state) => ({
       originalList: list,
-      showList: list,
+      showList: applyFiltersAndSorting(list, state.actionBarState),
+      loading: false,
     }))
   },
 
   setFilterFree: () => {
+    set({loading: true});
     set((state) => {
       const updatedConfig = {
         ...state.actionBarState,
@@ -38,11 +42,13 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
 
   setFilterPaid: () => {
+    set({loading: true});
     set((state) => {
       const updatedConfig = {
         ...state.actionBarState,
@@ -52,11 +58,13 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
 
   setFilterViewOnly: () => {
+    set({loading: true});
     set((state) => {
       const updatedConfig = {
         ...state.actionBarState,
@@ -66,11 +74,13 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
 
   searchByKeyword: (keyword) => {
+    set({loading: true});
     set((state) => {
       const updatedConfig = {
         ...state.actionBarState,
@@ -80,11 +90,13 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
 
   setPricingMax: (value) => {
+    set({loading: true});
     set((state) => {
       const updatedConfig = {
         ...state.actionBarState,
@@ -94,11 +106,13 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
 
   setPricingMin: (value) => {
+    set({loading: true});
     set((state) => {
       const updatedConfig = {
         ...state.actionBarState,
@@ -108,11 +122,13 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
 
   resetFilters: () => {
+    set({loading: true});
     const updatedConfig = {
       filterFree: false,
       filterPaid: false,
@@ -127,11 +143,13 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
 
   setSorting: (order) => {
+    set({loading: true});
     set((state) => {
       const updatedConfig = {
         ...state.actionBarState,
@@ -141,6 +159,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+        loading: false,
       }
     })
   },
