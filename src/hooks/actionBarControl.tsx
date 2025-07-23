@@ -14,15 +14,7 @@ import {
   setActionBarStateToUrl
 } from '../utils/actionBarUrlState.utils';
 
-const initialState: ActionBarState = getActionBarStateFromUrl({
-  filterFree: false,
-  filterPaid: false,
-  filterViewOny: false,
-  searchKeyword: '',
-  filterMaxPricing: 999,
-  filterMinPricing: 0,
-  sortingOrder: ApparelCatalogSortingOrder.NAME,
-})
+const initialState: ActionBarState = getActionBarStateFromUrl();
 
 const useActionbarControl = create<ActionbarStore>((set) => ({
   originalList: [],
