@@ -1,52 +1,22 @@
 import { create } from 'zustand'
 import type {
-  ApparelCatalog,
   ActionBarState,
   ActionbarStore,
 } from '../types'
 
 import {
-  ApparelCatalogSortingOrder,
-  PricingOption,
+  ApparelCatalogSortingOrder
 } from '../enums'
+import { applyFiltersAndSorting } from '../utils'
 
 const initialState: ActionBarState = {
   filterFree: false,
   filterPaid: false,
   filterViewOny: false,
   searchKeyword: '',
-  filterMaxPricing: Infinity,
+  filterMaxPricing: 999,
   filterMinPricing: 0,
   sortingOrder: ApparelCatalogSortingOrder.NAME,
-}
-
-const applyFiltersAndSorting = (items: ApparelCatalog, actionBarConfig: ActionBarState): ApparelCatalog => {
-  return items
-    .filter((item) => {
-      const isFree = actionBarConfig.filterFree && item.pricingOption === PricingOption.FREE
-      const isPaid = actionBarConfig.filterPaid && item.pricingOption === PricingOption.PAID
-      const isViewOnly = actionBarConfig.filterViewOny && item.pricingOption === PricingOption.VIEW_ONLY
-
-      const priceInRange = item.price >= actionBarConfig.filterMinPricing && item.price <= actionBarConfig.filterMaxPricing
-      const matchesKeyword = item.title.toLowerCase().includes(actionBarConfig.searchKeyword.toLowerCase())
-
-      const pricingFilterApplied = actionBarConfig.filterFree || actionBarConfig.filterPaid || actionBarConfig.filterViewOny
-        ? isFree || isPaid || isViewOnly
-        : true
-
-      return priceInRange && matchesKeyword && pricingFilterApplied
-    })
-    .sort((a, b) => {
-      switch (actionBarConfig.sortingOrder) {
-        case ApparelCatalogSortingOrder.PRICEASC:
-          return a.price - b.price
-        case ApparelCatalogSortingOrder.PRICEDESC:
-          return b.price - a.price
-        case ApparelCatalogSortingOrder.NAME:
-        default:
-          return a.title.localeCompare(b.title)
-      }
-    })
 }
 
 const useActionbarControl = create<ActionbarStore>((set) => ({
