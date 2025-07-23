@@ -1,5 +1,5 @@
-import { ApparelCatalogSortingOrder, PricingOption } from "./enums";
-import type { ActionBarState, ApparelCatalog } from "./types";
+import { ApparelCatalogSortingOrder, PricingOption } from "../enums";
+import type { ActionBarState, ApparelCatalog } from "../types";
 
 function pricingOptionFilter(list:ApparelCatalog, criteria: {filterPaid: boolean, filterFree: boolean, filterViewOny: boolean}): ApparelCatalog {
     let filterCritera = [];

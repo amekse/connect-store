@@ -7,9 +7,14 @@ import type {
 import {
   ApparelCatalogSortingOrder
 } from '../enums'
-import { applyFiltersAndSorting } from '../utils'
+import { applyFiltersAndSorting } from '../utils/filterAndSort.utils'
 
-const initialState: ActionBarState = {
+import {
+  getActionBarStateFromUrl,
+  setActionBarStateToUrl
+} from '../utils/actionBarUrlState.utils';
+
+const initialState: ActionBarState = getActionBarStateFromUrl({
   filterFree: false,
   filterPaid: false,
   filterViewOny: false,
@@ -17,7 +22,7 @@ const initialState: ActionBarState = {
   filterMaxPricing: 999,
   filterMinPricing: 0,
   sortingOrder: ApparelCatalogSortingOrder.NAME,
-}
+})
 
 const useActionbarControl = create<ActionbarStore>((set) => ({
   originalList: [],
@@ -37,6 +42,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         filterFree: !state.actionBarState.filterFree,
       }
+      setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
@@ -50,6 +56,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         filterPaid: !state.actionBarState.filterPaid,
       }
+      setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
@@ -63,6 +70,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         filterViewOny: !state.actionBarState.filterViewOny,
       }
+      setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
@@ -76,6 +84,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         searchKeyword: keyword,
       }
+      setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
@@ -89,6 +98,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         filterMaxPricing: value,
       }
+      setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
@@ -102,6 +112,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         filterMinPricing: value,
       }
+      setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
@@ -110,11 +121,22 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
   },
 
   resetFilters: () => {
-    const updatedConfig = { ...initialState }
-    set((state) => ({
-      actionBarState: updatedConfig,
-      showList: applyFiltersAndSorting(state.originalList, updatedConfig),
-    }))
+    const updatedConfig = {
+      filterFree: false,
+      filterPaid: false,
+      filterViewOny: false,
+      searchKeyword: '',
+      filterMaxPricing: 999,
+      filterMinPricing: 0,
+      sortingOrder: ApparelCatalogSortingOrder.NAME,
+    }
+    set((state) => {
+      setActionBarStateToUrl(updatedConfig)
+      return {
+        actionBarState: updatedConfig,
+        showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+      }
+    })
   },
 
   setSorting: (order) => {
@@ -123,6 +145,7 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         sortingOrder: order,
       }
+      setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
         showList: applyFiltersAndSorting(state.originalList, updatedConfig),
