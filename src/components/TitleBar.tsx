@@ -1,6 +1,10 @@
+import "../styles/Titlebar.styles.css";
+
 function TitleBar() {
     return (
-        <>Title bar</>
+        <div className="titleBarContainer">
+            <span className="titleText">CONNECT</span>
+        </div>
     )
 }
 

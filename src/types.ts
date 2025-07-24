@@ -24,8 +24,9 @@ export type ActionbarStore = {
   originalList: ApparelCatalog
   showList: ApparelCatalog
   actionBarState: ActionBarState
-  loading: boolean
-
+  loading: boolean 
+  
+  initialize: (originalList: ApparelCatalog) => void
   setFilterFree: () => void
   setFilterPaid: () => void
   setFilterViewOnly: () => void
@@ -34,5 +35,4 @@ export type ActionbarStore = {
   setPricingMin: (value: number) => void
   resetFilters: () => void
   setSorting: (order: ApparelCatalogSortingOrder) => void
-  initialize: (originalList: ApparelCatalog) => void
 }
