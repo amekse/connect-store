@@ -35,10 +35,17 @@
     justify-content: space-between;
 }
 
-.boxRowSortBy {
+.boxSliderContainer {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+}
+
+.boxRowSortBy {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     gap: 16px;
 }
 

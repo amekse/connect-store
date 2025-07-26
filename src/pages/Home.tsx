@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 function Home() {
     const controlBarActions = useActionbarControl();
-    const { showList, initialize, loading: listLoading } = controlBarActions;
+    const { showList, initialize } = controlBarActions;
     const { apparelCatalog, isPending: fetchLoading, error } = useFetchHomeCatalog();
 
     useEffect(() => {

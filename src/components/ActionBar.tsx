@@ -1,12 +1,12 @@
 import "../styles/ActionBar.styles.css";
-import { Box, Button, Checkbox, FormControlLabel, Input, InputAdornment, MenuItem, Select, Slider, Typography, type SelectChangeEvent } from "@mui/material";
+import { Box, Button, Checkbox, CircularProgress, FormControlLabel, Input, InputAdornment, MenuItem, Select, Slider, Typography, type SelectChangeEvent } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { ApparelCatalogSortingOrder } from "../enums";
 import type { ActionbarStore } from "../types";
 import { useEffect, useState } from "react";
 
 function ActionBar( props:ActionbarStore ) {
-    const { loading, actionBarState, setFilterFree, setFilterPaid, setFilterViewOnly, searchByKeyword, setPricingMax, setPricingMin, setSorting, resetFilters } = props;
+    const { actionBarState, setFilterFree, setFilterPaid, setFilterViewOnly, searchByKeyword, setPricingMax, setPricingMin, setSorting, resetFilters } = props;
     const [localPriceRangeMem, setLocalPriceRangeMem] = useState<number[]>([0, 999]);
 
     const handleSort = (event: SelectChangeEvent) => {
@@ -42,16 +42,19 @@ function ActionBar( props:ActionbarStore ) {
                     <FormControlLabel label={<Typography noWrap>View Only</Typography>} control={<Checkbox checked={actionBarState.filterViewOny} onChange={setFilterViewOnly} />} />
                 </Box>
                 <Box className="boxRowSliderAndReset">
-                    <Slider 
-                        onChange={handlePriceRange}
-                        value={localPriceRangeMem}
-                        style={{ width: '30%' }}
-                        valueLabelDisplay="auto"
-                        min={0}
-                        max={999}
-                        disabled={!(actionBarState.filterPaid && !actionBarState.filterFree && !actionBarState.filterViewOny)}
-                        color="secondary"
-                    />
+                    <Box className="boxSliderContainer">
+                        <Typography style={{ minWidth: '40px', marginRight: '16px' }}>&#36; {localPriceRangeMem[0]}</Typography>
+                        <Slider 
+                            onChange={handlePriceRange}
+                            value={localPriceRangeMem}
+                            style={{ width: '30%' }}
+                            min={0}
+                            max={999}
+                            disabled={!(actionBarState.filterPaid && !actionBarState.filterFree && !actionBarState.filterViewOny)}
+                            color="secondary"
+                        />
+                        <Typography style={{ minWidth: '40px', marginLeft: '24px' }}>&#36; {localPriceRangeMem[1]}</Typography>
+                    </Box>
                     <Button sx={{ color: '#ffffff' }} onClick={resetFilters}>Reset</Button>
                 </Box>
             </Box>

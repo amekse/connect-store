@@ -13,7 +13,7 @@ function pricingOptionFilter(list:ApparelCatalog, criteria: {filterPaid: boolean
 
 function keywordFilter(list: ApparelCatalog, criteria: string): ApparelCatalog {
     if (!!criteria && criteria.trim() !== "") {
-        return list.filter((item) => item.title.includes(criteria) || item.creator.includes(criteria));
+        return list.filter((item) => item.title.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) || item.creator.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()));
     }
     return list;
 }
