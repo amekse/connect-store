@@ -5,6 +5,10 @@
     gap: 4px;
 }
 
+.itemCardSkeletonContainer {
+    height: 50vh;
+}
+
 .itemCardImage {
     width: inherit;
     height: 90%;
