@@ -1,0 +1,28 @@
+.itemCardContainer {
+    width: inherit;
+    height: 70vh;
+
+    gap: 4px;
+}
+
+.itemCardImage {
+    width: inherit;
+    height: 90%;
+    object-fit: contain;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.itemRowFlex {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.itemColumnFlex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}

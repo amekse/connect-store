@@ -1,21 +1,33 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ActionBar from "../components/ActionBar";
 import ContentList from "../components/ContentList";
 import TitleBar from "../components/TitleBar";
 
 import "../styles/Home.styles.css";
 import useActionbarControl from "../hooks/actionBarControl";
+import useFetchHomeCatalog from "../hooks/homeCatalog";
+import { useEffect } from "react";
 
 function Home() {
     const controlBarActions = useActionbarControl();
-    const {} = controlBarActions;
+    const { showList, initialize, loading: listLoading } = controlBarActions;
+    const { apparelCatalog, isPending: fetchLoading, error } = useFetchHomeCatalog();
+
+    useEffect(() => {
+        if (apparelCatalog && apparelCatalog.length > 0) {
+            initialize(apparelCatalog);
+        }
+    }, [apparelCatalog])
     
     return (
-        <Box bgcolor="background.default" className="homeContainer">
+        <Box bgcolor="background.paper" className="homeContainer">
             <TitleBar />
-            <Box bgcolor="background.paper" className="homeContentSection">
+            <Box className="homeContentSection">
                 <ActionBar {...controlBarActions} />
-                <ContentList />
+                {
+                    error ? <Typography color="error">Oops, something went wrong.</Typography> :
+                    <ContentList showList={showList} loading={fetchLoading} />
+                }
             </Box>
         </Box>
     )

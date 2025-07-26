@@ -38,6 +38,10 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         filterFree: !state.actionBarState.filterFree,
       }
+      if (updatedConfig.filterPaid) {
+        updatedConfig.filterMaxPricing = 999;
+        updatedConfig.filterMinPricing = 0;
+      }
       setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
@@ -54,6 +58,10 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
         ...state.actionBarState,
         filterPaid: !state.actionBarState.filterPaid,
       }
+      if (!updatedConfig.filterPaid) {
+        updatedConfig.filterMaxPricing = 999;
+        updatedConfig.filterMinPricing = 0;
+      }
       setActionBarStateToUrl(updatedConfig)
       return {
         actionBarState: updatedConfig,
@@ -69,6 +77,10 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
       const updatedConfig = {
         ...state.actionBarState,
         filterViewOny: !state.actionBarState.filterViewOny,
+      }
+      if (updatedConfig.filterPaid) {
+        updatedConfig.filterMaxPricing = 999;
+        updatedConfig.filterMinPricing = 0;
       }
       setActionBarStateToUrl(updatedConfig)
       return {
@@ -98,15 +110,21 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
   setPricingMax: (value) => {
     set({loading: true});
     set((state) => {
-      const updatedConfig = {
-        ...state.actionBarState,
-        filterMaxPricing: value,
-      }
-      setActionBarStateToUrl(updatedConfig)
-      return {
-        actionBarState: updatedConfig,
-        showList: applyFiltersAndSorting(state.originalList, updatedConfig),
-        loading: false,
+      if (state.actionBarState.filterPaid) {
+        const updatedConfig = {
+          ...state.actionBarState,
+          filterMaxPricing: value,
+        }
+        setActionBarStateToUrl(updatedConfig)
+        return {
+          actionBarState: updatedConfig,
+          showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+          loading: false,
+        }
+      } else {
+        return {
+          loading: true
+        }
       }
     })
   },
@@ -114,15 +132,21 @@ const useActionbarControl = create<ActionbarStore>((set) => ({
   setPricingMin: (value) => {
     set({loading: true});
     set((state) => {
-      const updatedConfig = {
-        ...state.actionBarState,
-        filterMinPricing: value,
-      }
-      setActionBarStateToUrl(updatedConfig)
-      return {
-        actionBarState: updatedConfig,
-        showList: applyFiltersAndSorting(state.originalList, updatedConfig),
-        loading: false,
+      if (state.actionBarState.filterPaid) {
+        const updatedConfig = {
+          ...state.actionBarState,
+          filterMinPricing: value,
+        }
+        setActionBarStateToUrl(updatedConfig)
+        return {
+          actionBarState: updatedConfig,
+          showList: applyFiltersAndSorting(state.originalList, updatedConfig),
+          loading: false,
+        }
+      } else {
+        return {
+          loading: false
+        }
       }
     })
   },

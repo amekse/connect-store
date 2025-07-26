@@ -36,3 +36,8 @@ export type ActionbarStore = {
   resetFilters: () => void
   setSorting: (order: ApparelCatalogSortingOrder) => void
 }
+
+export type ContentListProps = {
+  loading: boolean,
+  showList: ApparelCatalog
+}

@@ -1,10 +1,11 @@
+import { Box } from "@mui/material";
 import "../styles/Titlebar.styles.css";
 
 function TitleBar() {
     return (
-        <div className="titleBarContainer">
+        <Box bgcolor="background.default" className="titleBarContainer">
             <span className="titleText">CONNECT</span>
-        </div>
+        </Box>
     )
 }
 

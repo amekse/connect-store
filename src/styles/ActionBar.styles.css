@@ -20,9 +20,30 @@
     color: #ffffff;
 }
 
-.boxRow {
+.boxRowPricingOptions {
+    width: fit-content;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 16px;
+}
+
+.boxRowSliderAndReset {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.boxRowSortBy {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+    .pricingOptionBar {
+        flex-wrap: wrap;
+    }
 }

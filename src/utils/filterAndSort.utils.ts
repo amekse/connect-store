@@ -3,10 +3,11 @@ import type { ActionBarState, ApparelCatalog } from "../types";
 
 function pricingOptionFilter(list:ApparelCatalog, criteria: {filterPaid: boolean, filterFree: boolean, filterViewOny: boolean}): ApparelCatalog {
     let filterCritera = [];
-    if (criteria.filterFree) filterCritera.push(PricingOption.PAID);
-    if (criteria.filterPaid) filterCritera.push(PricingOption.FREE);
+    if (criteria.filterFree) filterCritera.push(PricingOption.FREE);
+    if (criteria.filterPaid) filterCritera.push(PricingOption.PAID);
     if (criteria.filterViewOny) filterCritera.push(PricingOption.VIEW_ONLY);
 
+    if (filterCritera.length === 0) return list;
     return list.filter((item) => filterCritera.includes(item.pricingOption));
 }
 
@@ -30,11 +31,23 @@ function sortByName(list: ApparelCatalog): ApparelCatalog {
 }
 
 function sortByPriceLowToHigh(list: ApparelCatalog): ApparelCatalog {
-    return list.sort((a, b) => a.price - b.price);
+    const freeItems = list.filter(item => item.pricingOption === PricingOption.FREE);
+    const paidItems = list
+        .filter(item => item.pricingOption === PricingOption.PAID)
+        .sort((a, b) => a.price - b.price);
+    const viewOnlyItems = list.filter(item => item.pricingOption === PricingOption.VIEW_ONLY);
+
+    return [...freeItems, ...paidItems, ...viewOnlyItems];
 }
 
 function sortByPriceHighToLow(list: ApparelCatalog): ApparelCatalog {
-    return list.sort((a, b) => b.price - a.price);
+    const paidItems = list
+        .filter(item => item.pricingOption === PricingOption.PAID)
+        .sort((a, b) => b.price - a.price);
+    const freeItems = list.filter(item => item.pricingOption === PricingOption.FREE);
+    const viewOnlyItems = list.filter(item => item.pricingOption === PricingOption.VIEW_ONLY);
+
+    return [...paidItems, ...freeItems, ...viewOnlyItems];
 }
 
 function applyFilter(list: ApparelCatalog, criteria: {filterFree: boolean, filterPaid: boolean, filterViewOny: boolean, searchKeyword: string, filterMaxPricing: number, filterMinPricing: number}): ApparelCatalog {

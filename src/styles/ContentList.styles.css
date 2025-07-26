@@ -1,0 +1,27 @@
+.contentListContainer {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 32px;
+    padding: 24px 0;
+}
+
+@media only screen and (max-width: 1200px) {
+    .contentListContainer {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .contentListContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .contentListContainer {
+        grid-template-columns: 1fr;
+    }
+}
