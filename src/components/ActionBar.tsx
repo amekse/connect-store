@@ -1,5 +1,5 @@
 import "../styles/ActionBar.styles.css";
-import { Box, Button, Checkbox, CircularProgress, FormControlLabel, Input, InputAdornment, MenuItem, Select, Slider, Typography, type SelectChangeEvent } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Input, InputAdornment, MenuItem, Select, Slider, Typography, type SelectChangeEvent } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { ApparelCatalogSortingOrder } from "../enums";
 import type { ActionbarStore } from "../types";
