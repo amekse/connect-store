@@ -68,7 +68,7 @@ function ContentList(props:ContentListProps) {
             {
                 !loading && showList.map((item, index) => index < itemLimit && <ItemCard key={item.id} {...item} />)
             }
-            <div style={{ display: itemLimit < showList.length ? 'block' : 'none' }} ref={paginatorRef} >
+            <div className="loadMoreContainer" style={{ display: itemLimit < showList.length ? 'flex' : 'none' }} ref={paginatorRef} >
                 <Button onClick={handleLoadMore} variant="text">Load more</Button>
             </div>
         </Box>
