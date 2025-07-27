@@ -18,12 +18,20 @@ function keywordFilter(list: ApparelCatalog, criteria: string): ApparelCatalog {
     return list;
 }
 
-function priceMinFilter(list: ApparelCatalog, criteria: number): ApparelCatalog {
-    return list.filter((item) => item.price >= criteria);
+function priceMinFilter(list: ApparelCatalog, criteria: {filterPaid: boolean, filterMinPricing: number}): ApparelCatalog {
+    if (criteria.filterPaid) {
+        return list.filter((item) => item.pricingOption === PricingOption.PAID && item.price >= criteria.filterMinPricing);
+    } else {
+        return list;
+    }
 }
 
-function priceMaxFilter(list:ApparelCatalog, criteria:number): ApparelCatalog {
-    return list.filter((item) => item.price <= criteria);
+function priceMaxFilter(list:ApparelCatalog, criteria: {filterPaid: boolean, filterMaxPricing: number}): ApparelCatalog {
+    if (criteria.filterPaid) {
+        return list.filter((item) => item.pricingOption === PricingOption.PAID && item.price <= criteria.filterMaxPricing);
+    } else {
+        return list;
+    }
 }
 
 function sortByName(list: ApparelCatalog): ApparelCatalog {
@@ -53,8 +61,8 @@ function sortByPriceHighToLow(list: ApparelCatalog): ApparelCatalog {
 function applyFilter(list: ApparelCatalog, criteria: {filterFree: boolean, filterPaid: boolean, filterViewOny: boolean, searchKeyword: string, filterMaxPricing: number, filterMinPricing: number}): ApparelCatalog {
     let filtered = pricingOptionFilter(list, {...criteria});
     filtered = keywordFilter(filtered, criteria.searchKeyword);
-    filtered = priceMinFilter(filtered, criteria.filterMinPricing);
-    filtered = priceMaxFilter(filtered, criteria.filterMaxPricing);
+    filtered = priceMinFilter(filtered, {...criteria});
+    filtered = priceMaxFilter(filtered, {...criteria});
 
     return filtered;
 }

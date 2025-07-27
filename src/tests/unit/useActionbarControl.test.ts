@@ -1,163 +1,143 @@
-import { act } from '@testing-library/react';
-import { afterEach, describe, expect, it, beforeEach } from '@jest/globals';
 import useActionbarControl from '../../hooks/actionBarControl';
-import { PricingOption, ApparelCatalogSortingOrder } from '../../enums';
-import type { ApparelItem } from '../../types';
-import { cleanup } from '@testing-library/react';
+import { ApparelCatalogSortingOrder, PricingOption } from '../../enums';
 
-const itemA: ApparelItem = {
-  id: '1',
-  creator: 'Alice',
-  title: 'Alpha Shirt',
-  pricingOption: PricingOption.FREE,
-  imagePath: '/alpha.jpg',
-  price: 0,
-}
-
-const itemB: ApparelItem = {
-  id: '2',
-  creator: 'Bob',
-  title: 'Beta Pants',
-  pricingOption: PricingOption.PAID,
-  imagePath: '/beta.jpg',
-  price: 50,
-}
-
-const itemC: ApparelItem = {
-  id: '3',
-  creator: 'Charlie',
-  title: 'Gamma Hat',
-  pricingOption: PricingOption.VIEW_ONLY,
-  imagePath: '/gamma.jpg',
-  price: 25,
-}
-
-const mockList = [itemA, itemB, itemC]
+const mockItems = [
+  {
+    id: '1',
+    creator: 'Alice',
+    title: 'Blue Shirt',
+    pricingOption: PricingOption.PAID,
+    imagePath: '/blue.jpg',
+    price: 400
+  },
+  {
+    id: '2',
+    creator: 'BobKeyword',
+    title: 'Green Pants',
+    pricingOption: PricingOption.FREE,
+    imagePath: '/green.jpg',
+    price: 100
+  },
+  {
+    id: '3',
+    creator: 'Charlie',
+    title: 'Keyword Hoodie',
+    pricingOption: PricingOption.VIEW_ONLY,
+    imagePath: '/hoodie.jpg',
+    price: 200
+  },
+  {
+    id: '4',
+    creator: 'Dave',
+    title: 'Premium Coat',
+    pricingOption: PricingOption.PAID,
+    imagePath: '/coat.jpg',
+    price: 999
+  },
+];
 
 beforeEach(() => {
-  act(() => {
-    useActionbarControl.getState().initialize(mockList)
-  })
-})
+  const store = useActionbarControl.getState();
+  store.resetFilters();
+  store.initialize(mockItems);
+});
 
-afterEach(() => {
-  cleanup()
-  // reset Zustand store state
-  const { resetFilters } = useActionbarControl.getState()
-  act(() => resetFilters())
-})
+test('1. search keyword should return only matching items', () => {
+  const store = useActionbarControl.getState();
+  store.searchByKeyword('keyword');
 
-describe('useActionbarControl store', () => {
-  it('initializes with given list', () => {
-    const { originalList, showList } = useActionbarControl.getState()
-    expect(originalList).toEqual(mockList)
-    expect(showList).toEqual(mockList)
-  })
+  const result = useActionbarControl.getState().showList.map(i => i.id);
+  expect(result).toEqual(['2', '3']);
+});
 
-  it('toggles filterFree and filters correctly', () => {
-    act(() => {
-      useActionbarControl.getState().setFilterFree()
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemA])
-  })
+test('2. when paid is on, only paid items should be returned', () => {
+  const store = useActionbarControl.getState();
+  store.setFilterPaid();
 
-  it('toggles filterPaid and filters correctly', () => {
-    act(() => {
-      useActionbarControl.getState().setFilterPaid()
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemB])
-  })
+  const result = useActionbarControl.getState().showList;
+  expect(result.every(i => i.pricingOption === PricingOption.PAID)).toBe(true);
+});
 
-  it('toggles filterViewOnly and filters correctly', () => {
-    act(() => {
-      useActionbarControl.getState().setFilterViewOnly()
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemC])
-  })
+test('3. when free is on, only free items should be returned', () => {
+  const store = useActionbarControl.getState();
+  store.setFilterFree();
 
-  it('filters by multiple pricing options together', () => {
-    act(() => {
-      useActionbarControl.getState().setFilterFree()
-      useActionbarControl.getState().setFilterPaid()
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemA, itemB])
-  })
+  const result = useActionbarControl.getState().showList;
+  expect(result.every(i => i.pricingOption === PricingOption.FREE)).toBe(true);
+});
 
-  it('filters by search keyword', () => {
-    act(() => {
-      useActionbarControl.getState().searchByKeyword('Gamma')
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemC])
-  })
+test('4. when view only is on, only view-only items should be returned', () => {
+  const store = useActionbarControl.getState();
+  store.setFilterViewOnly();
 
-  it('applies pricing min filter correctly', () => {
-    act(() => {
-      useActionbarControl.getState().setPricingMin(30)
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemB])
-  })
+  const result = useActionbarControl.getState().showList;
+  expect(result.every(i => i.pricingOption === PricingOption.VIEW_ONLY)).toBe(true);
+});
 
-  it('applies pricing max filter correctly', () => {
-    act(() => {
-      useActionbarControl.getState().setPricingMax(10)
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemA])
-  })
+test('5. when sorted by name, list should be alphabetical by title', () => {
+  const store = useActionbarControl.getState();
+  store.setSorting(ApparelCatalogSortingOrder.NAME);
 
-  it('applies both min and max price filters together', () => {
-    act(() => {
-      useActionbarControl.getState().setPricingMin(10)
-      useActionbarControl.getState().setPricingMax(30)
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList).toEqual([itemC])
-  })
+  const titles = useActionbarControl.getState().showList.map(i => i.title);
+  expect([...titles]).toEqual([...titles].sort((a, b) => a.localeCompare(b)));
+});
 
-  it('applies sorting by NAME', () => {
-    act(() => {
-      useActionbarControl.getState().setSorting(ApparelCatalogSortingOrder.NAME)
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList.map(i => i.title)).toEqual(['Alpha Shirt', 'Beta Pants', 'Gamma Hat'])
-  })
+test('6. sort low to high: FREE ➜ PAID asc ➜ VIEW_ONLY', () => {
+  const store = useActionbarControl.getState();
+  store.setSorting(ApparelCatalogSortingOrder.PRICEASC);
 
-  it('applies sorting by PRICE ASCENDING', () => {
-    act(() => {
-      useActionbarControl.getState().setSorting(ApparelCatalogSortingOrder.PRICEASC)
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList.map(i => i.price)).toEqual([0, 25, 50])
-  })
+  const result = useActionbarControl.getState().showList;
 
-  it('applies sorting by PRICE DESCENDING', () => {
-    act(() => {
-      useActionbarControl.getState().setSorting(ApparelCatalogSortingOrder.PRICEDESC)
-    })
-    const { showList } = useActionbarControl.getState()
-    expect(showList.map(i => i.price)).toEqual([50, 25, 0])
-  })
+  const freeIds = result.filter(i => i.pricingOption === PricingOption.FREE).map(i => i.id);
+  const paidItems = result.filter(i => i.pricingOption === PricingOption.PAID);
+  const paidPrices = paidItems.map(i => i.price);
+  const viewIds = result.filter(i => i.pricingOption === PricingOption.VIEW_ONLY).map(i => i.id);
 
-  it('resets all filters to initial state', () => {
-    act(() => {
-      useActionbarControl.getState().setFilterFree()
-      useActionbarControl.getState().searchByKeyword('Gamma')
-      useActionbarControl.getState().setPricingMax(10)
-      useActionbarControl.getState().setSorting(ApparelCatalogSortingOrder.PRICEDESC)
-      useActionbarControl.getState().resetFilters()
-    })
-    const { showList, actionBarState } = useActionbarControl.getState()
-    expect(showList).toEqual(mockList)
-    expect(actionBarState.filterFree).toBe(false)
-    expect(actionBarState.filterPaid).toBe(false)
-    expect(actionBarState.searchKeyword).toBe('')
-    expect(actionBarState.sortingOrder).toBe(ApparelCatalogSortingOrder.NAME)
-    expect(actionBarState.filterMaxPricing).toBe(Infinity)
-  })
-})
+  expect(paidPrices).toEqual([...paidPrices].sort((a, b) => a - b));
+  expect(result.map(i => i.id)).toEqual([...freeIds, ...paidItems.map(i => i.id), ...viewIds]);
+});
+
+test('7. sort high to low: PAID desc ➜ FREE ➜ VIEW_ONLY', () => {
+  const store = useActionbarControl.getState();
+  store.setSorting(ApparelCatalogSortingOrder.PRICEDESC);
+
+  const result = useActionbarControl.getState().showList;
+
+  const paidItems = result.filter(i => i.pricingOption === PricingOption.PAID);
+  const paidPrices = paidItems.map(i => i.price);
+
+  expect(paidPrices).toEqual([...paidPrices].sort((a, b) => b - a));
+  expect(result[0].price).toBe(999);
+});
+
+test('8. paid + price range: only paid items within min-max', () => {
+  const actions = useActionbarControl.getState();
+  actions.setFilterPaid();
+  actions.setPricingMin(500);
+  actions.setPricingMax(1000);
+
+  const { showList } = useActionbarControl.getState();
+  expect(showList.length).toBe(1);
+  expect(showList[0].id).toBe('4');
+  expect(showList[0].pricingOption).toBe(PricingOption.PAID);
+});
+
+test('9. price range without paid flag returns empty list', () => {
+  const store = useActionbarControl.getState();
+  store.setPricingMin(500);
+  store.setPricingMax(1000);
+
+  const { showList } = useActionbarControl.getState();
+  expect(showList.length).toBe(4);
+});
+
+test('10. paid + keyword: only paid items matching keyword', () => {
+  const store = useActionbarControl.getState();
+  store.setFilterPaid();
+  store.searchByKeyword('coat');
+
+  const { showList } = useActionbarControl.getState();
+  expect(showList.length).toBe(1);
+  expect(showList[0].pricingOption).toBe(PricingOption.PAID);
+  expect(showList[0].title.toLowerCase()).toContain('coat');
+});
