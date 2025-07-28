@@ -14,7 +14,6 @@ This project is a **Front-end Developer Assessment** for the position at CLO Vir
 - **Zustand** – Lightweight state management
 - **TanStack Query (React Query)** – Data fetching, caching, and persistence
 - **Material UI (MUI)** – Component library for consistent and responsive UI
-- **React Router DOM** – For route and URL state handling
 - **Jest + React Testing Library** – Unit testing
 
 ---
@@ -103,19 +102,50 @@ npm test
 
 ---
 
-## Folder Structure (simplified)
+## Component Architecture
+
+```
+- Home
+  ├── TitleBar
+  ├── ActionBar
+  └── ContentList
+       ├── ItemCardSkeleton (for loading state)
+       └── ItemCard (for individual content items)
+```
+
+## Folder Structure
 
 ```
 src/
 │
-├── components/         # Reusable UI components
-├── hooks/              # Custom React hooks
-├── pages/              # Main route views
-├── services/           # API logic
-├── store/              # Zustand store
-├── utils/              # Helpers and constants
-├── App.tsx
-├── index.tsx
+├── components/              # All re-useable components
+│   ├── ActionBar.tsx
+│   ├── ContentList.tsx
+│   ├── ItemCard.tsx
+│   ├── ItemCardSkeleton.tsx
+│   └── TitleBar.tsx
+│
+├── hooks/                   # Custom hooks
+│   ├── actionBarControl.tsx
+│   └── homeCatalog.tsx
+│
+├── pages/                   # All pages
+│   └── Home.tsx
+│
+├── styles/                  # Theme and scoped styles
+│   └── (various style files)
+│
+├── tests/                   # Unit and utility tests
+│   └── useActionBarControl.test.ts
+│
+├── utils/                   # Utility and helper logic
+│   ├── actionBarUrlState.utils.ts
+│   └── filterAndSort.utils.ts
+│
+├── enums.ts                 # Central enum definitions
+├── types.ts                 # Central TypeScript types
+├── constants.ts             # Central Static values and labels
+└── theme.ts                 # MUI theme overrides
 ```
 
 ---
