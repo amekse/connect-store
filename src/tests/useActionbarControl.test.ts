@@ -1,5 +1,5 @@
-import useActionbarControl from '../../hooks/actionBarControl';
-import { ApparelCatalogSortingOrder, PricingOption } from '../../enums';
+import useActionbarControl from '../hooks/actionBarControl';
+import { ApparelCatalogSortingOrder, PricingOption } from '../enums';
 
 const mockItems = [
   {
