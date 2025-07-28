@@ -88,7 +88,7 @@ This project is a **Front-end Developer Assessment** for the position at CLO Vir
   - Active only when **Paid** is selected exclusively
   - Range: 0 – 999
   - Dynamic filtering
-- **Skeleton UI** for initial loading and infinite scroll
+- **Skeleton UI** for initial loading
 
 ---
 
@@ -161,4 +161,4 @@ src/
 
 ## Contact
 
-For queries or suggestions, feel free to reach out on call: +91-8420463112 or email: dassaswata1996@gmail.com
+For queries or suggestions, feel free to reach out on **phone**: `+91-8420463112` or **email**: `dassaswata1996@gmail.com`
