@@ -113,6 +113,8 @@ npm test
        └── ItemCard (for individual content items)
 ```
 
+---
+
 ## Folder Structure
 
 ```
@@ -147,6 +149,12 @@ src/
 ├── constants.ts             # Central Static values and labels
 └── theme.ts                 # MUI theme overrides
 ```
+
+---
+
+## Demo video
+
+https://github.com/user-attachments/assets/6650a3cd-4b02-40ed-9a43-5b11e058283d
 
 ---
 
