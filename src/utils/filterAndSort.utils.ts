@@ -18,16 +18,16 @@ function keywordFilter(list: ApparelCatalog, criteria: string): ApparelCatalog {
     return list;
 }
 
-function priceMinFilter(list: ApparelCatalog, criteria: {filterPaid: boolean, filterMinPricing: number}): ApparelCatalog {
-    if (criteria.filterPaid) {
+function priceMinFilter(list: ApparelCatalog, criteria: {filterFree: boolean, filterPaid: boolean, filterViewOny: boolean, filterMinPricing: number}): ApparelCatalog {
+    if (criteria.filterPaid && !criteria.filterFree && !criteria.filterViewOny) {
         return list.filter((item) => item.pricingOption === PricingOption.PAID && item.price >= criteria.filterMinPricing);
     } else {
         return list;
     }
 }
 
-function priceMaxFilter(list:ApparelCatalog, criteria: {filterPaid: boolean, filterMaxPricing: number}): ApparelCatalog {
-    if (criteria.filterPaid) {
+function priceMaxFilter(list:ApparelCatalog, criteria: {filterFree: boolean, filterPaid: boolean, filterViewOny: boolean, filterMaxPricing: number}): ApparelCatalog {
+    if (criteria.filterPaid && !criteria.filterFree && !criteria.filterViewOny) {
         return list.filter((item) => item.pricingOption === PricingOption.PAID && item.price <= criteria.filterMaxPricing);
     } else {
         return list;

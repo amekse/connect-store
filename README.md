@@ -161,4 +161,4 @@ src/
 
 ## Contact
 
-For queries or suggestions, feel free to reach out on **phone**: `+91-8420463112` or **email**: `dassaswata1996@gmail.com`
+For queries or suggestions, feel free to reach out on **phone**: `+91-8420463112` or **email**: `dassaswata1996@gmail.com`  
